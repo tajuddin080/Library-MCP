@@ -1,7 +1,7 @@
 from mcp.server.fastmcp import FastMCP
 from datastore import BOOKS, STUDENTS
 from datetime import date
-
+import db
 
 mcp = FastMCP("library-mcp", host="0.0.0.0", port="19000")
 
@@ -27,6 +27,38 @@ def search_books(query: str, genre: str="") -> list[dict]:
         if hit and genre_ok:
             results.append(book)
     return results or [{"message": "No books found"}]
+
+@mcp.tool(name="add_book", description="Add a new book to the library")
+def add_book(
+    book_id: str,
+    title: str,
+    author: str,
+    published_year: int,
+    available_copies: int,
+    total_copies: int,
+    genre: str,
+    available: bool,
+    active: bool,
+    tags: list[str],
+    isbn: str ) -> str:
+    """Add a new book to the library
+
+    Args:
+        book_id (str): Unique book id
+        title (str): Book title
+        author (str): Author name
+        published_year (int): Year published
+        available_copies (int): Number of copies available
+        total_copies (int): Total number of copies
+        genre (str): Book genre
+        available (bool): Is the book available
+        active (bool): Is the book active
+        tags (list[str]): List of tags
+        isbn (str): ISBN number
+    """
+    db.add_book(book_id, title, author, published_year, available_copies, total_copies, genre, available, active, tags, isbn)
+    return f"Added book {title} to the library"
+
 
 @mcp.resource("library://catalog")
 def get_catalog() -> str:

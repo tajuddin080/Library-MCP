@@ -1,11 +1,10 @@
 [project]
-name = "library-mcp"
+name = "library-mcp-client"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "fastmcp>=3.2.4",
+    "fastmcp[cli]>=3.3.1",
     "mcp[cli]>=1.27.1",
-    "mysql-connector-python>=9.7.0",
 ]
